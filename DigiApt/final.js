@@ -25,10 +25,14 @@ conn.connect((err) =>{
   console.log('Mysql Connected...');
 });
 
+
+
 //Api to get all major details
 app.get('/users/alldetails',(req, res) => {
-    let sql = "SELECT * FROM register";
-    let query = conn.query(sql, (err, results) => {
+  let data={id:req.body.id};
+  console.log(data);
+    let sql = "SELECT * FROM register where id=?";
+    let query = conn.query(sql,data.id, (err, results) => {
       if(err) throw err;
       console.log(results);
       
@@ -48,26 +52,26 @@ app.get('/users/alldetails',(req, res) => {
         }
        return age;
     }
-    console.log(getAge(item.dob));
-
-
-
-         
+    console.log(getAge(item.dob));   
+   
      
       })
       res.send(JSON.stringify({"status": 200, "error": null,"response":results}));
-     
-
-      
 
     });
 
   });
    
- //Api to get user details
+
+
+
+
+
+ //Api to get single user details
   app.get('/users/details',(req, res) => {
+    
     let sql = "SELECT first_name,email FROM register";
-    let query = conn.query(sql, (err, results) => {
+    let query = conn.query(sql,(err, results) => {
       if(err) throw err;
      res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
      console.log(results);
