@@ -10,9 +10,6 @@ app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 
 
-
-
-
  
 //create database connection
 const conn = mysql.createConnection({
@@ -28,6 +25,7 @@ conn.connect((err) =>{
   console.log('Mysql Connected...');
 });
 
+//Api to get all major details
 app.get('/users/alldetails',(req, res) => {
     let sql = "SELECT * FROM register";
     let query = conn.query(sql, (err, results) => {
@@ -66,7 +64,7 @@ app.get('/users/alldetails',(req, res) => {
 
   });
    
- 
+ //Api to get user details
   app.get('/users/details',(req, res) => {
     let sql = "SELECT first_name,email FROM register";
     let query = conn.query(sql, (err, results) => {
@@ -78,7 +76,7 @@ app.get('/users/alldetails',(req, res) => {
   });
    
   
-  
+  //Api to register user
   app.post('/users/register',[check('first_name').isLength({ min: 3, max: 32 }),
                               check('last_name').isLength({min:3,max:32}).optional(),
                               check('email').isEmail().normalizeEmail().exists(),
@@ -98,7 +96,7 @@ app.get('/users/alldetails',(req, res) => {
     let sql = "INSERT INTO register SET ?";
     let query = conn.query(sql, data,(err, results) => {
       if(err) throw err;
-      // res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+       res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
 
     
     });
