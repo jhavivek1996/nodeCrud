@@ -40,25 +40,30 @@ app.get('/users/alldetails',(req, res) => {
       results.map((item,index ) => {
         let newDate =  new Date(item.dob);
         dob[index] =  newDate;  
-        
+        console.log(item.dob);
         //To Calculate Age
-      function getAge(DOB) {
-        var today = new Date();
-        var birthDate = new Date(DOB);
-        var age = today.getFullYear() - birthDate.getFullYear();
-        var m = today.getMonth() - birthDate.getMonth();
-        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-            age = age - 1;
-        }
-       return age;
-    }
-    console.log(getAge(item.dob));   
-   
-     
-      })
-      res.send(JSON.stringify({"status": 200, "error": null,"response":results}));
-
+        function getAge(DOB)
+                      {
+                      var today = new Date();
+                      var birthDate = new Date(DOB);
+                      var age = today.getFullYear() - birthDate.getFullYear();
+                      var m = today.getMonth() - birthDate.getMonth();
+                      if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate()))
+                       {
+                          age = age - 1;
+                        }
+                      return age;
+                      
+                        }   
+                 console.log(getAge(item.dob));
+                      
+      
+      
+       res.send(JSON.stringify({"status": 200, "error": null,"response":results,"age":getAge(item.dob)}));
+      });
     });
+
+   
 
   });
    
