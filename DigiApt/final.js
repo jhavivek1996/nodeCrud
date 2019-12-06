@@ -25,6 +25,23 @@ conn.connect((err) =>{
   console.log('Mysql Connected...');
 });
 
+//TO calcullate age
+var getAge= function (DOB)
+{
+var today = new Date();
+var birthDate = new Date(DOB);
+var age = today.getFullYear() - birthDate.getFullYear();
+var m = today.getMonth() - birthDate.getMonth();
+if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate()))
+ {
+    age = age - 1;
+  }
+return age;
+
+  }   
+//console.log(getAge(item.dob));
+
+
 
 
 //Api to get all major details
@@ -42,27 +59,11 @@ app.get('/users/alldetails',(req, res) => {
         dob[index] =  newDate;  
         console.log(item.dob);
         //To Calculate Age
-        function getAge(DOB)
-                      {
-                      var today = new Date();
-                      var birthDate = new Date(DOB);
-                      var age = today.getFullYear() - birthDate.getFullYear();
-                      var m = today.getMonth() - birthDate.getMonth();
-                      if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate()))
-                       {
-                          age = age - 1;
-                        }
-                      return age;
-                      
-                        }   
-                 console.log(getAge(item.dob));
-                      
-      
       
        res.send(JSON.stringify({"status": 200, "error": null,"response":results,"age":getAge(item.dob)}));
       });
     });
-
+console.log("Hiiiiiii");
    
 
   });
@@ -90,7 +91,7 @@ app.get('/users/alldetails',(req, res) => {
                               check('last_name').isLength({min:3,max:32}).optional(),
                               check('email').isEmail().normalizeEmail().exists(),
                               check('mobile').isLength({min:6,max:15}).optional(),
-                              check('dob').isISO8601({format: "DD-MM-YYYY"}).toDate()
+                              check('dob').isISO8601({format: "^(0[1-9]|[12][0-9]|3[01])[- /.]"}).toDate()
 
                               ],async (req, res) => {
     const errors = validationResult(req);
